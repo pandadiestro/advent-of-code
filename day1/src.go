@@ -20,14 +20,62 @@
 * In this example, the calibration values of these four lines are 12, 38, 15, and 77. Adding these together produces 142.
 *
 * Consider your entire calibration document. What is the sum of all of the calibration values?
-*/
-
-
+ */
 
 package main
 
-func main() {
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"time"
+)
 
+const input string = "../inputs/day1.input"
+
+func getFirstInt(str *string) int32 {
+    for _, ch := range *str {
+        if ch > 47 && ch < 58 {
+            return ch - 48
+        }
+    }
+
+    return -1
+}
+
+func getLastInt(str *string) int32 {
+    length := len(*str)
+    runes := []rune(*str)
+
+    for i := length - 1; i > -1; i-- {
+        if runes[i] > 47 && runes[i] < 58 {
+            return runes[i] - 48
+        }
+    }
+
+    return -1
+}
+
+func main() {
+    time1 := time.Now().UnixNano()
+    var ac int32 = 0
+    inputFile, openErr := os.Open(input)
+    if openErr != nil {
+        fmt.Println(openErr)
+        os.Exit(-1)
+    }
+
+    inputReader := bufio.NewScanner(inputFile)
+    for inputReader.Scan() {
+        stringLine := inputReader.Text()
+        Left := getFirstInt(&stringLine)
+        Right := getLastInt(&stringLine)
+        ac += Left*10 + Right
+    }
+
+    time2 := time.Now().UnixNano()
+    fmt.Println(ac)
+    fmt.Println("time: ", time2 - time1)
 }
 
 
